@@ -1,0 +1,27 @@
+{
+  "name": "library-cheatsheets-sanityio",
+  "version": "1.0.0",
+  "description": "A complete overhaul of my library cheatsheets, including the use of Sanity.io as backend.",
+  "main": "index.js",
+  "source": "index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BradCoffield/library-cheatsheets-sanityio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BradCoffield/library-cheatsheets-sanityio/issues"
+  },
+  "homepage": "https://github.com/BradCoffield/library-cheatsheets-sanityio#readme",
+  "dependencies": {
+    "@portabletext/to-html": "^1.0.4"
+  },
+  "devDependencies": {
+    "parcel": "^2.7.0"
+  }
+}
