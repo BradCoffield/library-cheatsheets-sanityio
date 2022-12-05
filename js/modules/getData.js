@@ -1,6 +1,6 @@
 export default async (area) => {
   
-console.log("getData for ", area)
+console.log("getData for:", area)
     let PROJECT_ID = "wzuhalz9";
     let DATASET = "production";
     let QUERY = encodeURIComponent(

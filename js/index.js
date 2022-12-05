@@ -1,6 +1,7 @@
 import { toHTML } from "@portabletext/to-html";
 import getData from "./modules/getData";
 import basicDomAppend from "./modules/dom/basicDomAppend";
+import appendUL from "./modules/dom/appendUL";
 
 const whichPageWeWorkingWith = document.querySelector(".subjectName").id;
 if (whichPageWeWorkingWith == "Creative Writing") {  whichPageWeWorkingWith = "English";}
@@ -38,8 +39,17 @@ console.log("Page = ", whichPageWeWorkingWith);
     }
 
     if (i.name === "databases") {
-      const databaseData = data.result.databasesForTopic[0];
-      console.log("Database Data = ", databaseData)
+      const databaseData = data.result.databasesForTopic;
+      // console.log("Database Data = ", databaseData)
+      appendUL("databases")
+      databaseData.forEach((i) => {
+        console.log(i.title, i.url, i.useProxy)
+        let ourUrl = i.url
+        if (i.useProxy){ourUrl = `${data.result.libraryProxyUrl[0].url}${i.url}`;}
+    
+        
+        basicDomAppend("databases-ul", `<li><a href="${ourUrl}">${i.title}</a></li>`)
+      })
     }
   });
 
