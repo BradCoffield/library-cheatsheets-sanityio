@@ -1,6 +1,5 @@
-export default  () => {
-     
-      let htmlWeWant = `  <form role="search" style="margin-top: -.44rem">
+export default () => {
+  let htmlWeWant = `   <form role="search" style="margin-top: -.44rem">
     <div class="input-group add-on">
         <input class="form-control" placeholder=" " id="1549903767743" name="CatalogSearch"
             type="text">
@@ -18,16 +17,14 @@ export default  () => {
                         <a href="https://trails-rocky.primo.exlibrisgroup.com/discovery/search?vid=01TRAILS_ROCKY:01TRAILS_ROCKY&mode=advanced">Advanced Search</a> |   <a href="https://libkey.io/">DOI Lookup</a>
                     </div>`;
 
-      let tt = new BlockContent(htmlWeWant, "primo_quick_search-interior");
-      tt.getToAppending();
+  let tt = new BlockContent(htmlWeWant, "primo_quick_search-interior");
+  tt.getToAppending(); 
 
-      let aa = document.getElementById("primo-search-button");
-      aa.addEventListener("click", function (event) {
-        var target =
-          "https://trails-rocky.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=MyInstitution&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&offset=0&query=any,contains," +
-          document.getElementById("1549903767743").value;
-        console.log(document.getElementById("1549903767743").value);
-        window.open(target, "_blank");
-      });
-    };
- 
+  let aa = document.getElementById("primo-search-button");
+  aa.addEventListener("click", function (event) {
+    var target =
+      "https://trails-rocky.primo.exlibrisgroup.com/discovery/search?tab=Everything&search_scope=MyInstitution&vid=01TRAILS_ROCKY:01TRAILS_ROCKY&offset=0&query=any,contains," +
+      document.getElementById("1549903767743").value;
+    window.open(target, "_blank");
+  });
+};

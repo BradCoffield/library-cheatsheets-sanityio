@@ -16,24 +16,30 @@ console.log("Page = ", whichPageWeWorkingWith);
   const data = await getData(whichPageWeWorkingWith).catch((error) => {
     error.message;
   });
-  console.log(data.result);
+  // console.log(data.result);
   let cheatsheetData = data.result.cheatsheetData[0];
+   console.log("Cheatsheet Data:/:", cheatsheetData);
 
   // Let's loop over our block order and get those wrappers into the dom
   const defaultBlockOrder = [
-    { name: "catalogQuickSearch", place: 0 },
-    { name: "databases", place: 1 },
-    { name: "websites", place: 2 },
-    { name: "ebooks", place: 3 },
-    { name: "instructionVideos", place: 4 },
-    { name: "citationStyles", place: 5 },
+    {
+      name: "catalogQuickSearch",
+      place: 0,
+      displayName:
+        "Power Search: Books, articles, and more from RMC and beyond",
+    },
+    { name: "databases", place: 1, displayName:"Databases" },
+    { name: "websites", place: 2, displayName:"Trusted Websites" },
+    { name: "ebooks", place: 3, displayName:"eBooks" },
+    { name: "instructionVideos", place: 4, displayName:"Instruction Videos" },
+    { name: "citationStyles", place: 5, displayName:"Citation Styles" },
   ];
 
   //TODO: Have a spinner overlay the page until everything is done.
 
   //Build and append wrapper divs for all of our possible blocks
   defaultBlockOrder.forEach((i) => {
-    const forAppending = `<div id="${i.name}">${i.name}</div>`;
+    const forAppending = `<div id="${i.name}"><h2 id="${i.name}-heading">${i.displayName}</h2></div>`;
     basicDomAppend("cheatsheets-content-wrapper", forAppending);
 
     if (i.name === "catalogQuickSearch") {
@@ -44,7 +50,7 @@ console.log("Page = ", whichPageWeWorkingWith);
 
     if (i.name === "databases" && data.result.databasesForTopic?.length > 0) {
       const databaseData = data.result.databasesForTopic;
-      // console.log("Database Data = ", databaseData)
+      console.log("Database Data = ", databaseData[0])
 
       appendUL("databases");
 
@@ -57,17 +63,45 @@ console.log("Page = ", whichPageWeWorkingWith);
 
         basicDomAppend(
           "databases-ul",
-          `<li><a href="${ourUrl}" target="_blank">${i.title}</a></li>`
+         ` <li class="database-li">
+          <h5><a style="display:inline" href="${ourUrl}" target="_blank">${
+            i.title
+          }</a>
+<div class="wrap-collabsible" style="display:inline"  >
+                  <input id="collapsible-${
+                    i.title
+                  }" class="toggle" type="checkbox">
+                  <label for="collapsible-${
+                    i.title
+                  }" class="lbl-toggle"><img src="https://www.rocky.edu/sites/default/files/circle-question-light2.png" width=16px style="margin-bottom:5px;"alt=""> </label>
+                  <div class="collapsible-content">
+                    <div class="content-inner">
+                    <p class="database-description">${
+                      i.description
+                    }</p>
+                    </div>
+                  </div>
+                </div></h5>
+        
+   
+          
+          </li>`
         );
       });
     }
 
-    if (i.name === "websites" && cheatsheetData.websites?.length > 0) {
+    if (
+      i.name === "websites" &&
+      data.result.websitesForCheatsheet?.length > 0
+    ) {
+      const websitesData = data.result.websitesForCheatsheet;
+      console.log(websitesData);
       appendUL("websites");
-      cheatsheetData.websites.forEach((website) => {
+      websitesData.forEach((website) => {
+        console.log(website);
         basicDomAppend(
           "websites-ul",
-          `<li><a href="${website.url}" target="_blank">${website.title}</a></li>`
+          `<li><a href="${website.url}" target="_blank">${website.title}</a><p>${website.description}</p></li>`
         );
       });
     }
@@ -114,17 +148,13 @@ console.log("Page = ", whichPageWeWorkingWith);
       // We may have multiple citation styles that we are building onto the page. So we loop over each possible one and do the same stuff for each one.
 
       cheatsheetData.citationStyles.forEach((citationStyle) => {
-        let contentForDom = `<h3 style='font-family: "Roboto Condensed", sans-serif;text-decoration: underline;'>${citationStyle.title}</h3><div class="flex-container" style="margin: 0rem 0rem 4rem"><div class="flex-container"><img src="${citationStyle.catalogBook.coverImageURL}" alt="Book cover of ${citationStyle.title} Handbook"  ></img><p style="max-width:250px;align-self:center;margin-left:16px;margin-right:32px;">${citationStyle.catalogBook.description} It is available for use <a href="${citationStyle.catalogBook.permalink}" target="_blank">in the library.</a></p></div><div><h4 style='font-family: "Roboto Condensed", sans-serif;text-decoration: underline;'>Helpful Links</h4><ul id="${citationStyle.title}-helpful-links-ul"></ul></div></div>`;
+        let contentForDom = `<h3 style='font-family: "Roboto Condensed", sans-serif;text-decoration: underline;'>${citationStyle.title}</h3><div class="flex-container" style="margin: 0rem 0rem 4rem"><div class="flex-container"><img src="${citationStyle.catalogBook.coverImageURL}" alt="Book cover of ${citationStyle.title} Handbook"  ></img><p style="max-width:250px;align-self:center;margin-left:16px;margin-right:32px;">${citationStyle.catalogBook.description} It is available for use <a href="${citationStyle.catalogBook.permalink}" target="_blank">in the library.</a></p></div><div><h4 style='font-family: "Roboto Condensed", sans-serif;text-decoration: underline;'>Helpful Links</h4><ul id="${citationStyle.title}-helpful-links-ul"><li><a href="${citationStyle.citingGeneralGuideLink}" target="_blank">Guide @ the OWL</a></li>
+          <li><a href="${citationStyle.citingBookSourcesLink}" target="_blank">Citing Book Sources</a></li>
+          <li><a href="${citationStyle.citingOnlineSourcesLink}" target="_blank">Citing Online Sources</a></li></ul></div></div>`;
         
         basicDomAppend("citationStyles", contentForDom);
 
-        let citationStyleLinksForDom = `
-          
-          <li><a href="${styleLinks.purdueOwlLinks.primaryLink}" target="_blank">Guide @ the OWL</a></li>
-          <li><a href="${styleLinks.purdueOwlLinks.citingBookSourcesLink}" target="_blank">Citing Book Sources</a></li>
-          <li><a href="${styleLinks.purdueOwlLinks.citingOnlineSourcesLink}" target="_blank">Citing Online Sources</a></li>
-          `
-        
+              
       });
     }
   }); //end our loop over default order

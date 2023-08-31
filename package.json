@@ -2,7 +2,7 @@
   "name": "library-cheatsheets-sanityio",
   "version": "1.0.0",
   "description": "A complete overhaul of my library cheatsheets, including the use of Sanity.io as backend.",
-  "main": "index.js",
+   
   "source": "index.html",
   "scripts": {
     "start": "parcel",
